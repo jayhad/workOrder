@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en" manifest="manifest.appcache" ng-app="workorder">
+	<head>
+		<script src="javascripts/angular/angular.js"></script>
+		<script src="javascripts/workOrderController.js"></script>
+		<link rel="stylesheet" href="stylesheets/style.css">
+	</head>
+	<body ng-controller="WorkOrderController as controller">
+		<h1>Create Work Order:</h1>
+		<form ng-submit="controller.addWorkOrder()">
+			<label>First Name: <input type="text" ng-model='controller.firstName' autofocus required /input></label>
+			<label>Last Name: <input type="text" ng-model='controller.lastName' required /input></label>
+			<br/>
+			<label>Date: <input type="date" ng-model='controller.date' required /input></label>
+			<br/><br/>
+			<label>Work Description<textarea ng-model='controller.workDescription' placeholder="{{ controller.workDescriptionPlaceholder }}" required></textarea></label>
+			<span style="color:{{ controller.wordsRemainingColor }}"ng-bind="controller.getWordCount(controller.workDescription, 300)"></span><br/><br/>
+			<fieldset id="severity-fieldset">
+				<legend>Severity</legend>	
+				<label><input type="radio" ng-model="controller.severity" name="severity" value="minor" required> Minor</label>
+				<label><input type="radio" ng-model="controller.severity" name="severity" value="major"> Major</label>
+				<label><input type="radio" ng-model="controller.severity" name="severity" value="urgent"> Urgent</label>
+			</fieldset>
+			<br/>
+			<fieldset>
+				<legend>Location</legend>
+				<label class="location">Latitude: <span ng-if="!controller.showInput">{{ controller.latitude }}</span><input type="number" ng-model="controller.latitude" ng-if="controller.showInput" required></input></label><br/>
+				<label class="location">Longitude: <span ng-if="!controller.showInput">{{ controller.longitude }}</span><input type="number" ng-model="controller.longitude" ng-if="controller.showInput" required></input></label><br/>
+				<label class="location">Altitude: <span ng-if="!controller.showInput">{{ controller.altitude }}</span><input type="number" ng-model="controller.altitude" ng-if="controller.showInput" required></input></label><br/>
+				<input type="button" value="{{ controller.locationButton }}" ng-click="controller.getGeoLocation()" ng-disabled="controller.gettingLocation"></input>
+				<br/>
+				<span class="message">{{ controller.locationError }}</span>
+			</fieldset>
+			<input type="submit" value="Submit Work Order" ng-disabled="controller.sendingRequest"/input>
+			<span class="message">{{ controller.resultMessage }}</span>
+		</form>
+	</body>
+	<br/>
+	<footer>Adam Gomes and Jay Gruber</footer>
+</html>
